@@ -1,6 +1,5 @@
 import React, { createContext, useState } from "react";
 
-const background = document.querySelector(".background");
 // Crea el contexto
 export const WeatherContext = createContext();
 export const ThemeContext = createContext("light");
