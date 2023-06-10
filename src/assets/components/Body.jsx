@@ -1,10 +1,11 @@
 import React, { useEffect, useContext, useState } from "react";
 import axios from "axios";
-import { WeatherContext } from "../utils/WeatherContext";
+import { WeatherContext, ThemeContext } from "../utils/WeatherContext";
 
 export default function Body() {
   const apiKey = "e7a96d4db0d60c5db00fd0be348c2430";
   const { weatherData, updateWeatherData } = useContext(WeatherContext);
+  const theme = useContext(ThemeContext);
   const [checked, setChecked] = useState(false);
 
   useEffect(() => {
@@ -19,6 +20,7 @@ export default function Body() {
         );
         updateWeatherData(response.data);
         setChecked(true);
+        // console.log(response.data)
       } catch (error) {
         console.error(error);
         setChecked(false);
@@ -37,10 +39,10 @@ export default function Body() {
 
   return (
     <>
-      <div className="bg-orange-400 md:w-96 w-80 h-auto m-4 p-5 mx-auto rounded-xl block shadow-2xl">
-        <h1 className="text-white p-1 text-center text-3xl font-thin">
-          Buscador de clima
-        </h1>
+      <div
+        className={`${theme === "dark" ? "dark-bg" : "light-bg"}
+      } md:w-96 w-80 h-auto m-4 p-5 mx-auto rounded-xl block shadow-2xl`}
+      >
         {weatherData && weatherData.weather && (
           <>
             <img
@@ -48,20 +50,27 @@ export default function Body() {
               src={`https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`}
               alt="icon"
             />
-            <p className="text-white text-5xl text-center font-extrabold font-mono">
+            <p
+              className={`${theme === "dark" ? "dark-bg" : "light-bg"}
+              } text-5xl text-center font-extrabold font-mono`}
+            >
               {kelvinToCentigrade(weatherData.main.temp)}°C
             </p>
-            <p className="text-white text-md text-center font-sans">
+            <p
+              className="text-white text-md text-center font-sans"
+            >
               Max: {kelvinToCentigrade(weatherData.main.temp_max)}
             </p>
-            <p className="text-white text-md text-center font-sans">
+            <p
+              className="text-white text-md text-center font-sans"
+            >
               Min: {kelvinToCentigrade(weatherData.main.temp_min)}
             </p>
           </>
         )}
         <form id="form" className="text-center p-2">
           <input
-            className="p-1 m-2 w-56 rounded-xl"
+            className="p-1 m-2 w-56 rounded-xl text-black"
             type="text"
             placeholder="Ingrese su ciudad"
             id="ciudad"
@@ -87,11 +96,19 @@ export default function Body() {
             />
           </svg>
           {checked ? (
-            <p></p>
+            <p className={`${theme === "dark" ? "text-green-500" : "text-emerald-700 "} font-bold`}>
+              Ciudad encontrada
+            </p>
           ) : (
-            <p className="text-red-500">Error al encontrar la ciudad</p>
+            <p
+              className="text-red-600 font-bold">
+              Error al encontrar la ciudad
+            </p>
           )}
-          <select className="p-1 m-2 w-64 rounded-xl" id="pais">
+          <select
+            className="p-1 m-2 w-64 rounded-xl text-black"
+            id="pais"
+          >
             <option disabled value="">
               Selecciona un País
             </option>
@@ -102,7 +119,11 @@ export default function Body() {
           </select>
           <br />
           <button
-            className="p-1 m-2 bg-slate-800 hover:bg-slate-900 text-white w-64 rounded-md"
+            className={`${
+              theme === "dark"
+                ? "bg-slate-600 hover:bg-slate-700"
+                : "bg-orange-600 hover:bg-orange-700"
+            } text-white w-64 rounded-md p-1 m-2`}
             type="submit"
           >
             Buscar

@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
-import { WeatherContext } from "../utils/WeatherContext";
+import { WeatherContext,ThemeContext } from "../utils/WeatherContext";
 
 function Search() {
   const { weatherData } = useContext(WeatherContext);
   const [searches, setSearches] = useState([]);
-
+  const theme = useContext(ThemeContext);
   // Agregar un nuevo div al array de búsquedas cada vez que cambie el estado del clima
   useEffect(() => {
     if (weatherData) {
@@ -17,14 +17,21 @@ function Search() {
     return parseInt(temp - 273.15);
   }
   return (
-    <div className="bg-orange-300 p-5 h-auto mx-auto">
+    <div className={`${
+      theme === "dark" ? "dark-bg" : "light-bg"}
+    }  p-5 h-auto mx-auto`}>
       <h2 className="text-3xl text-zinc-50 text-center font-light">
         Búsquedas realizadas anteriormente
       </h2>
       <div className="flex justify-center flex-wrap">
         {searches.length > 0 ? (
           searches.map((search, index) => (
-            <div className="bg-orange-400 m-4 w-80 p-5 rounded-xl shadow-2xl" key={index}>
+            <div className={`${
+              theme === "dark"
+                ? "bg-slate-600"
+                : "bg-orange-300"
+            }  m-4 w-80 p-5 rounded-xl shadow-2xl`}
+             key={index}>
               <h2 className="text-zinc-100 text-center text-xl">
                 {search.name}
               </h2>
